@@ -40,10 +40,23 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     public GameObject wheelObject;
 
+    public float steerAngle;
+
+    // there's probably a better way to do this but whatever
+    public bool frontLeft;
+    public bool frontRight;
+    public bool backLeft;
+    public bool backRight;
+
     [HideInInspector] public Vector3 contactPoint = Vector3.zero;
 
     // velocity of the displacement
     private float displacementVelocity = 0f;
+
+    private void Update()
+    {
+        transform.localRotation = Quaternion.Euler(transform.localRotation.x, steerAngle, transform.localRotation.z);
+    }
 
     private void FixedUpdate()
     {
@@ -81,6 +94,7 @@ public class WheelScript : MonoBehaviour // ScriptableObject
     {
         float springForce = - springStiffness * (currentSpringLength - springRestLength);
         float damperForce = dampeningAmount * calculateDisplacementVelocity(deltaTime); // Mathf.Min(springForce, dampeningAmount * calculateDisplacementVelocity(deltaTime));
+        damperForce = Mathf.Clamp(damperForce, -springForce, springForce);
         float suspensionForce = (springForce - damperForce);
 
         return Mathf.Max(suspensionForce, 0);

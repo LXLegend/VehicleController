@@ -1,0 +1,55 @@
+{
+    "name": "VehicleInput",
+    "maps": [
+        {
+            "name": "Default Steering",
+            "id": "44ccc34f-9d38-45d2-a603-393af3d25e58",
+            "actions": [
+                {
+                    "name": "Steer",
+                    "type": "Value",
+                    "id": "ffe09a35-2789-45dc-aae8-46f97faa9107",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "1D Axis",
+                    "id": "9c639fa0-7086-481b-a9a0-2da88373d58f",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steer",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "332abfcd-5b8b-4fc4-8f59-5e89e8122f37",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "008c842d-6e0e-4aba-a391-1c1ff29bc3b0",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

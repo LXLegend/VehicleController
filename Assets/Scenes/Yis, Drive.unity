@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -132,6 +134,7 @@ GameObject:
   - component: {fileID: 56245833}
   - component: {fileID: 56245832}
   - component: {fileID: 56245834}
+  - component: {fileID: 56245835}
   m_Layer: 8
   m_Name: Vehicle
   m_TagString: Untagged
@@ -156,11 +159,18 @@ MonoBehaviour:
   - {fileID: 656984493}
   frontWheelDiameter: 1
   frontWheelWidth: 1
+  frontWheelDistance: 1.6
+  frontWheelAnchorHeight: 0
   backWheels:
   - {fileID: 1700728521}
   - {fileID: 1379726355}
   backWheelDiameter: 1
   backWheelWidth: 1
+  backWheelDistance: 1.6
+  backWheelAnchorHeight: 0
+  wheelBaseLength: 2
+  turnRadius: 4.7
+  steerInput: 0
 --- !u!4 &56245833
 Transform:
   m_ObjectHideFlags: 0
@@ -193,6 +203,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &56245835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56245831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: ff82cb8e5f8bf9a4c9b5921b008d3913,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Default Steering
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &228996772
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,6 +296,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -279,6 +321,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &228996776
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -349,6 +392,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -373,6 +417,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &424834768
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -443,6 +488,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -467,6 +513,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &435502408
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -537,6 +584,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -561,6 +609,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &442372947
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -630,6 +679,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -654,6 +704,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &516476180
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -674,7 +725,7 @@ GameObject:
   - component: {fileID: 656984493}
   - component: {fileID: 656984492}
   m_Layer: 8
-  m_Name: GameObject (1)
+  m_Name: FrontLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -688,7 +739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 656984490}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.8, y: 0, z: -1}
+  m_LocalPosition: {x: -0.8, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1575654148}
@@ -729,13 +780,18 @@ MonoBehaviour:
   springRestLength: 0.5
   maxSpringTravel: 0.3
   springStiffness: 25000
-  dampeningAmount: 2000
+  dampeningAmount: 4000
   raycastlength: 1.8
   minSpringLength: 0.19999999
   maxSpringLength: 0.8
   currentSpringLength: 0
   previousSpringLength: 0
   wheelObject: {fileID: 1575654147}
+  steerAngle: 0
+  frontLeft: 1
+  frontRight: 0
+  backLeft: 0
+  backRight: 0
   contactPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &729224226
 GameObject:
@@ -813,6 +869,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &729224228
@@ -939,6 +996,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -963,6 +1021,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &995863707
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1028,7 +1087,7 @@ GameObject:
   - component: {fileID: 1168100132}
   - component: {fileID: 1168100134}
   m_Layer: 8
-  m_Name: GameObject
+  m_Name: FrontRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1052,13 +1111,18 @@ MonoBehaviour:
   springRestLength: 0.5
   maxSpringTravel: 0.3
   springStiffness: 25000
-  dampeningAmount: 2000
+  dampeningAmount: 4000
   raycastlength: 1.8
   minSpringLength: 0.19999999
   maxSpringLength: 0.8
   currentSpringLength: 0
   previousSpringLength: 0
   wheelObject: {fileID: 1161942831}
+  steerAngle: 0
+  frontLeft: 0
+  frontRight: 1
+  backLeft: 0
+  backRight: 0
   contactPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &1168100133
 Transform:
@@ -1068,7 +1132,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168100131}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.8, y: 0, z: -1}
+  m_LocalPosition: {x: 0.8, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1161942832}
@@ -1168,7 +1232,7 @@ GameObject:
   - component: {fileID: 1379726355}
   - component: {fileID: 1379726357}
   m_Layer: 8
-  m_Name: GameObject (3)
+  m_Name: BackLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1192,13 +1256,18 @@ MonoBehaviour:
   springRestLength: 0.5
   maxSpringTravel: 0.3
   springStiffness: 25000
-  dampeningAmount: 2000
+  dampeningAmount: 4000
   raycastlength: 1.8
   minSpringLength: 0.19999999
   maxSpringLength: 0.8
   currentSpringLength: 0
   previousSpringLength: 0
   wheelObject: {fileID: 1377450179}
+  steerAngle: 0
+  frontLeft: 0
+  frontRight: 0
+  backLeft: 1
+  backRight: 0
   contactPoint: {x: 0, y: 0, z: 0}
 --- !u!4 &1379726356
 Transform:
@@ -1208,7 +1277,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1379726354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.8, y: 0, z: 1}
+  m_LocalPosition: {x: -0.8, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1377450180}
@@ -1274,7 +1343,7 @@ GameObject:
   - component: {fileID: 1700728521}
   - component: {fileID: 1700728520}
   m_Layer: 8
-  m_Name: GameObject (2)
+  m_Name: BackRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1288,7 +1357,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700728518}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.8, y: 0, z: 1}
+  m_LocalPosition: {x: 0.8, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1834415361}
@@ -1329,13 +1398,18 @@ MonoBehaviour:
   springRestLength: 0.5
   maxSpringTravel: 0.3
   springStiffness: 25000
-  dampeningAmount: 2000
+  dampeningAmount: 4000
   raycastlength: 1.8
   minSpringLength: 0.19999999
   maxSpringLength: 0.8
   currentSpringLength: 0
   previousSpringLength: 0
   wheelObject: {fileID: 1834415360}
+  steerAngle: 0
+  frontLeft: 0
+  frontRight: 0
+  backLeft: 0
+  backRight: 1
   contactPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &1717881063
 GameObject:
@@ -1385,10 +1459,11 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 419cccc6cb5c6f14eb83fa9b9a74df0d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1409,6 +1484,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1717881066
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1426,7 +1502,7 @@ Transform:
   m_GameObject: {fileID: 1717881063}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 1, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
