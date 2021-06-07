@@ -25,7 +25,11 @@ public class VehicleController : MonoBehaviour
 
     public float turnRadius = 14;
 
-    public float steerInput;
+    public float steerInput = 0f;
+
+    public float throttleInput = 0f;
+
+    public float brakeInput = 0f;
 
     private float ackermannAngleLeft;
     private float ackermannAngleRight;
@@ -95,4 +99,13 @@ public class VehicleController : MonoBehaviour
         steerInput = input.Get<float>();
     }
 
+    public void OnThrottle(InputValue input)
+    {
+        throttleInput = input.Get<float>();
+    }
+
+    public void OnBrake(InputValue input)
+    {
+        brakeInput = input.Get<float>();
+    }
 }
