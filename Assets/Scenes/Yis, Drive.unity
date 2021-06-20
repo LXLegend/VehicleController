@@ -171,6 +171,13 @@ MonoBehaviour:
   wheelBaseLength: 2
   turnRadius: 4.7
   steerInput: 0
+  throttleInput: 0
+  brakeInput: 0
+  maxEngineForce: 1000
+  longitudinalFrictionCoefficient: 0.15
+  lateralFrictionCoefficient: 0.95
+  maxLateralFriction: 15000
+  maxLongitudinalFriction: 1500
 --- !u!4 &56245833
 Transform:
   m_ObjectHideFlags: 0
