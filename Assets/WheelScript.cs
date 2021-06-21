@@ -36,6 +36,8 @@ public class WheelScript : MonoBehaviour // ScriptableObject
     // the length of the spring in the previous physics update
     [HideInInspector] public float previousSpringLength;
 
+    [HideInInspector] public bool isGrounded;
+
     // public Vector3 wheelCenter;
 
     public GameObject wheelObject;
@@ -100,6 +102,12 @@ public class WheelScript : MonoBehaviour // ScriptableObject
         return Mathf.Max(suspensionForce, 0);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        isGrounded = true;
+    }
+
+
     private void OnTriggerStay(Collider other)
     {
 
@@ -109,5 +117,10 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
         contactPoint = collisionPoint;
         
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        isGrounded = false;
     }
 }
