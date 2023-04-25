@@ -42,7 +42,7 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     public GameObject wheelObject;
 
-    [header("Steering")]
+    [Header("Steering")]
 
     public float steerAngle;
 
@@ -54,7 +54,7 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     [HideInInspector] public Vector3 contactPoint = Vector3.zero;
 
-    [header("Slip")]
+    [Header("Slip")]
 
     public float maxTireLongitudinalLoad;
 
