@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -45,6 +46,8 @@ public class VehicleController : MonoBehaviour
     public float maxLongitudinalFriction = 15000f;
 
     [HideInInspector] public float currentForwardForce = 0f;
+
+    public CinemachineFreeLook cinemachineCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -138,6 +141,13 @@ public class VehicleController : MonoBehaviour
     public void OnBrake(InputValue input)
     {
         brakeInput = input.Get<float>();
+    }
+
+    public void OnCamera(InputValue input)
+    {
+        if (!cinemachineCamera) return;
+        cinemachineCamera.m_XAxis.m_InputAxisValue = input.Get<Vector2>().x;
+        cinemachineCamera.m_YAxis.m_InputAxisValue = input.Get<Vector2>().y;
     }
 
     public Vector3 calculateLongitudinalFriction(Vector3 currentLongitudinalVelocity, float tireAngle = 0f)

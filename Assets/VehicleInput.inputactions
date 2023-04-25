@@ -11,7 +11,8 @@
                     "id": "ffe09a35-2789-45dc-aae8-46f97faa9107",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Throttle",
@@ -19,7 +20,8 @@
                     "id": "354fa34f-85fd-4922-82f8-990ae65007ef",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Brake",
@@ -27,7 +29,17 @@
                     "id": "f557e2df-d09e-4d43-8642-21c2a9208bae",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Camera",
+                    "type": "Value",
+                    "id": "3f8a59b4-b47b-4b75-a709-2833fcc9e25e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -184,6 +196,17 @@
                     "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ab512892-d0ff-42b7-b848-a6f9af84fed0",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
