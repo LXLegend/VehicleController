@@ -53,6 +53,9 @@ public class VehicleController : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        foreach (WheelScript wheel in frontWheels) { wheel.wheelDiameter = backWheelDiameter; }
+        foreach (WheelScript wheel in backWheels) { wheel.wheelDiameter = backWheelDiameter; }
     }
 
     // Update is called once per frame

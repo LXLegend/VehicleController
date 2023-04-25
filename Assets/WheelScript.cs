@@ -60,12 +60,25 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     public float maxTireLateralLoad;
 
+    public Vector3 prevPos = Vector3.zero;
+
+    [HideInInspector] public float wheelDiameter = 0f;
+
     // velocity of the displacement
     private float displacementVelocity = 0f;
+
+    private void Awake()
+    {
+        prevPos = transform.position;
+    }
 
     private void Update()
     {
         transform.localRotation = Quaternion.Euler(transform.localRotation.x, steerAngle, transform.localRotation.z);
+        Vector3 positionDelta = Vector3.Project(transform.position - prevPos, transform.forward);
+        float rotationEuler = Mathf.Rad2Deg * positionDelta.magnitude / wheelDiameter;
+        prevPos = transform.position;
+        wheelObject.transform.localRotation *= Quaternion.Euler(rotationEuler, 0f, 0f);
     }
 
     private void FixedUpdate()
