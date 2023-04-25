@@ -69,11 +69,17 @@ public class WheelScript : MonoBehaviour // ScriptableObject
             previousSpringLength = currentSpringLength;
             currentSpringLength = raycastHit.distance - wheelObject.transform.localScale.y / 2;
             // currentSpringLength = Mathf.Clamp(currentSpringLength, minSpringLength, maxSpringLength);
+
+            isGrounded = true;
+
+            contactPoint = raycastHit.point;
         }
         else
         {
             previousSpringLength = springRestLength;
             currentSpringLength = springRestLength;
+
+            isGrounded = false;
         }
 
         // Debug.Log(raycastHit.collider.name);
@@ -100,27 +106,5 @@ public class WheelScript : MonoBehaviour // ScriptableObject
         float suspensionForce = (springForce - damperForce);
 
         return Mathf.Max(suspensionForce, 0);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        isGrounded = true;
-    }
-
-
-    private void OnTriggerStay(Collider other)
-    {
-
-        Vector3 collisionPoint = other.ClosestPoint(wheelObject.transform.position);
-
-        // Debug.Log(collisionPoint);
-
-        contactPoint = collisionPoint;
-        
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        isGrounded = false;
     }
 }
