@@ -42,6 +42,8 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     public GameObject wheelObject;
 
+    [header("Steering")]
+
     public float steerAngle;
 
     // there's probably a better way to do this but whatever
@@ -51,6 +53,12 @@ public class WheelScript : MonoBehaviour // ScriptableObject
     public bool backRight;
 
     [HideInInspector] public Vector3 contactPoint = Vector3.zero;
+
+    [header("Slip")]
+
+    public float maxTireLongitudinalLoad;
+
+    public float maxTireLateralLoad;
 
     // velocity of the displacement
     private float displacementVelocity = 0f;

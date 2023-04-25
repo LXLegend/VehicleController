@@ -34,6 +34,7 @@ public class VehicleController : MonoBehaviour
     private float ackermannAngleLeft;
     private float ackermannAngleRight;
 
+<<<<<<< Updated upstream
     public float maxEngineForce = 1000f;
 
     public float longitudinalFrictionCoefficient = .15f;
@@ -43,6 +44,9 @@ public class VehicleController : MonoBehaviour
     public float maxLateralFriction = 150000f;
 
     public float maxLongitudinalFriction = 15000f;
+=======
+    [HideInInspector] public float currentForwardForce = 0f;
+>>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
