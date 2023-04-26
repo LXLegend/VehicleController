@@ -76,7 +76,8 @@ public class WheelScript : MonoBehaviour // ScriptableObject
     {
         transform.localRotation = Quaternion.Euler(transform.localRotation.x, steerAngle, transform.localRotation.z);
         Vector3 positionDelta = Vector3.Project(transform.position - prevPos, transform.forward);
-        float rotationEuler = Mathf.Rad2Deg * positionDelta.magnitude / wheelDiameter;
+        float rotationEuler = Mathf.Sign(Vector3.Dot(positionDelta, transform.forward)) * Mathf.Rad2Deg * positionDelta.magnitude / wheelDiameter;
+        print(rotationEuler);
         prevPos = transform.position;
         wheelObject.transform.localRotation *= Quaternion.Euler(rotationEuler, 0f, 0f);
     }
