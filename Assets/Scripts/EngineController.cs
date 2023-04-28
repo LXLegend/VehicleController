@@ -89,7 +89,7 @@ public class EngineController : MonoBehaviour
         // clamp engine speed
         Mathf.Clamp(engineSpeed, minRPM, maxRPM);
 
-        // while shifting, remove throttle input for delay
+        // while shifting, remove throttle input for delay?
         // throttle = 0;
 
         // when shifting completes, calculate new engine speed from current wheel rotation with gear ratio- if engine speed falls below minRPM, do not allow shift, if engine speed is above max, do not engage transmission
@@ -102,13 +102,13 @@ public class EngineController : MonoBehaviour
 
         // calculate expected displacement...?
 
-        // calculate Wheel Torque from Engine Torque
-        float wheelTorque;
+        // calculate Wheel Torque from Engine Torque only if transmission engaged
+        float wheelTorque = 0f;
 
         // calculate opposing Wheel Torque (Rolling Resistance + Brakes)
         float opposingWheelTorque;
 
-        // calculate net Torque?
+        // calculate net Torque? 
         float netTorque = 50f;
 
         // calculate force(?) from wheel
