@@ -4,6 +4,8 @@ using System.Data;
 using System;
 using UnityEngine;
 using System.Runtime.Serialization;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class EngineController : MonoBehaviour
 {
@@ -35,7 +37,15 @@ public class EngineController : MonoBehaviour
 
     public float transmissionOutputSpeed = 0f;
 
-    public bool transmissionEngaged = true;
+    // public bool transmissionEngaged = true;
+
+    public float longitudinalFrictionCoefficient = .15f;
+
+    public float lateralFrictionCoefficient = 0.95f;
+
+    public float maxLateralFriction = 150000f;
+
+    public float maxLongitudinalFriction = 15000f;
 
     [Serializable]
     public struct MomentOfInertia
@@ -87,7 +97,7 @@ public class EngineController : MonoBehaviour
     private void FixedUpdate()
     {
         // clamp engine speed
-        Mathf.Clamp(engineSpeed, minRPM, maxRPM);
+        engineSpeed = Mathf.Clamp(engineSpeed, minRPM, maxRPM);
 
         // while shifting, remove throttle input for delay?
         // throttle = 0;
@@ -95,41 +105,77 @@ public class EngineController : MonoBehaviour
         // when shifting completes, calculate new engine speed from current wheel rotation with gear ratio- if engine speed falls below minRPM, do not allow shift, if engine speed is above max, do not engage transmission
 
         // calculate Torque from stored engine speed
-        float engineTorque = torqueCurveAtThrottle[Mathf.RoundToInt(torqueCurveAtThrottle.Length * throttle)].Evaluate(engineSpeed);
+        float engineTorque = torqueCurveAtThrottle[Mathf.RoundToInt((torqueCurveAtThrottle.Length - 1) * throttle)].Evaluate(engineSpeed);
 
         // calculate expected wheel rotation amount from engine speed
-        float wheelRotation;
+        float wheelRotation = engineSpeed * 0.10472f;
 
         // calculate expected displacement...?
 
         // calculate Wheel Torque from Engine Torque only if transmission engaged
-        float wheelTorque = 0f;
+        float wheelTorque = gearRatios[gear] * engineTorque;
 
         // calculate opposing Wheel Torque (Rolling Resistance + Brakes)
-        float opposingWheelTorque;
+        float opposingWheelTorque = Mathf.Clamp(5f * wheelTorque * -brake, 0f, 1000f);
 
         // calculate net Torque? 
         float netTorque = 50f;
-
-        // calculate force(?) from wheel
-        float wheelForce;
+        if (gear == 0)
+            netTorque = engineTorque;
 
         // calculate Longitudinal Tire Force (slip)
         float wheelSlipRatio;
+
+        // calculate force(?) from wheel
+        float wheelForce;
 
         // calculate new engine speed by calculating acceleration of engine
         // use net torque to find out angular velocity
         float totalMomentOfInertia = flyWheel.momentOfInertia;
 
-        if (transmissionEngaged)
+        if (gear != 0)//(transmissionEngaged)
             totalMomentOfInertia += wheel.momentOfInertia * 4f;
 
         float angularAcceleration = netTorque / totalMomentOfInertia;
 
-        engineSpeed = Time.fixedDeltaTime * angularAcceleration;
+        print(netTorque);
+        print(angularAcceleration);
+
+        engineSpeed += Time.fixedDeltaTime * angularAcceleration;
 
         // 1 RPM = 0.10472 rad/s
         // 1 rad/s = 9.549297 RPM
+    }
+    public void OnThrottle(InputValue input)
+    {
+        throttle = input.Get<float>();
+    }
+
+    public void OnBrake(InputValue input)
+    {
+        brake = input.Get<float>();
+    }
+
+    public Vector3 CalculateLongitudinalFriction(Vector3 currentLongitudinalVelocity, float tireAngle = 0f)
+    {
+        // float longitudeFriction = 0f;
+
+        Vector3 rollingResistance = longitudinalFrictionCoefficient * (currentLongitudinalVelocity * Mathf.Cos(tireAngle * Mathf.Deg2Rad) + currentLongitudinalVelocity * Mathf.Sin(tireAngle * Mathf.Deg2Rad));// * _rb.mass;
+
+        rollingResistance = Mathf.Clamp(rollingResistance.magnitude, -maxLongitudinalFriction, maxLongitudinalFriction) * rollingResistance.normalized;
+
+        return rollingResistance;
+    }
+
+    public Vector3 CalculateLateralFriction(Vector3 currentLateralVelocity, float tireAngle = 0f)
+    {
+        // float lateralFriction = 0f;
+
+        Vector3 rollingResistance = lateralFrictionCoefficient * (currentLateralVelocity * Mathf.Sin(tireAngle * Mathf.Deg2Rad) + currentLateralVelocity * Mathf.Cos(tireAngle * Mathf.Deg2Rad));// * _rb.mass;
+
+        rollingResistance = Mathf.Clamp(rollingResistance.magnitude, -maxLateralFriction, maxLateralFriction) * rollingResistance.normalized;
+
+        return rollingResistance;
     }
 
     /*public float CalculateTorque(float RPM, float throttle)

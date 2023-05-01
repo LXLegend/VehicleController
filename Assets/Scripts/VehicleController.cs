@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -84,7 +85,7 @@ public class VehicleController : MonoBehaviour
         {
             // calculate the force of suspension the wheel places on the vehicle body
             if (wheel.springRestLength > wheel.currentSpringLength)
-                _rb.AddForceAtPosition(transform.up * wheel.calculateSpringForce(Time.fixedDeltaTime), wheel.transform.position);
+                _rb.AddForceAtPosition(transform.up * wheel.CalculateSpringForce(Time.fixedDeltaTime), wheel.transform.position);
 
             if (wheel.frontLeft)
             {
@@ -113,7 +114,7 @@ public class VehicleController : MonoBehaviour
         {
             // calculate the force of suspension the wheel places on the vehicle body
             if (wheel.springRestLength > wheel.currentSpringLength)
-                _rb.AddForceAtPosition(transform.up * wheel.calculateSpringForce(Time.fixedDeltaTime), wheel.transform.position);
+                _rb.AddForceAtPosition(transform.up * wheel.CalculateSpringForce(Time.fixedDeltaTime), wheel.transform.position);
 
             // _rb.AddForceAtPosition(transform.InverseTransformPoint(new Vector3(calculateLateralFriction(transform.InverseTransformPoint(_rb.GetPointVelocity(wheel.transform.position))), 0, calculateLongitudinalFriction(transform.InverseTransformPoint(_rb.GetPointVelocity(wheel.transform.position))) + (throttleInput - brakeInput) * maxEngineForce)), wheel.transform.position);
 
@@ -153,7 +154,7 @@ public class VehicleController : MonoBehaviour
         cinemachineCamera.m_YAxis.m_InputAxisValue = input.Get<Vector2>().y;
     }
 
-    public Vector3 calculateLongitudinalFriction(Vector3 currentLongitudinalVelocity, float tireAngle = 0f)
+    public Vector3 CalculateLongitudinalFriction(Vector3 currentLongitudinalVelocity, float tireAngle = 0f)
     {
         // float longitudeFriction = 0f;
 
@@ -164,7 +165,7 @@ public class VehicleController : MonoBehaviour
         return rollingResistance;
     }
 
-    public Vector3 calculateLateralFriction(Vector3 currentLateralVelocity, float tireAngle = 0f)
+    public Vector3 CalculateLateralFriction(Vector3 currentLateralVelocity, float tireAngle = 0f)
     {
         // float lateralFriction = 0f;
 
@@ -175,7 +176,7 @@ public class VehicleController : MonoBehaviour
         return rollingResistance;
     }
 
-    public Vector3 calculateLocalVelocity(Vector3 worldVelocity)
+    public Vector3 CalculateLocalVelocity(Vector3 worldVelocity)
     {
         Vector3 forwardVelocity = Vector3.Project(worldVelocity, transform.forward);// worldVelocity.z * Mathf.Cos((transform.eulerAngles.y) * Mathf.Deg2Rad) - worldVelocity.x * Mathf.Sin((transform.eulerAngles.y) * Mathf.Deg2Rad); // Mathf.Cos(transform.eulerAngles.y);
         Vector3 rightVelocity = Vector3.Project(worldVelocity, transform.right);//  worldVelocity.x * Mathf.Cos((transform.eulerAngles.y) * Mathf.Deg2Rad) + worldVelocity.z * Mathf.Sin((transform.eulerAngles.y) * Mathf.Deg2Rad);
@@ -186,23 +187,22 @@ public class VehicleController : MonoBehaviour
 
     public void applyForces(Vector3 forcePosition, WheelScript wheel, float angle = 0f)
     {
-        Vector3 forwardVel = Vector3.Project(_rb.GetPointVelocity(forcePosition), wheel.transform.forward);
-        Vector3 rightVel = Vector3.Project(_rb.GetPointVelocity(forcePosition), wheel.transform.right);
+        Vector3 forwardVel = Vector3.Project(_rb.GetPointVelocity(forcePosition), wheel.transform.forward.ProjectOntoPlane(wheel.contactNormal).normalized);// Vector3.Cross(wheel.transform.right, wheel.contactNormal)); // wheel.transform.forward);
+        Vector3 rightVel = Vector3.Project(_rb.GetPointVelocity(forcePosition), wheel.transform.right.ProjectOntoPlane(wheel.contactNormal).normalized);// Vector3.Cross(wheel.transform.forward, wheel.contactNormal)); // wheel.transform.right);
 
-        Vector3 longitudinalForces = calculateLongitudinalFriction(forwardVel);//calculateLongitudinalFriction(_rb.GetPointVelocity(forcePosition), angle + transform.eulerAngles.y);//  - (throttleInput - brakeInput) * maxEngineForce;
-        Vector3 lateralForces = calculateLateralFriction(rightVel);//calculateLateralFriction(_rb.GetPointVelocity(forcePosition), angle + transform.eulerAngles.y);
+        Vector3 longitudinalForces = CalculateLongitudinalFriction(forwardVel);//calculateLongitudinalFriction(_rb.GetPointVelocity(forcePosition), angle + transform.eulerAngles.y);//  - (throttleInput - brakeInput) * maxEngineForce;
+        Vector3 lateralForces = CalculateLateralFriction(rightVel);//calculateLateralFriction(_rb.GetPointVelocity(forcePosition), angle + transform.eulerAngles.y);
         // Vector3 forces = transform.InverseTransformVector(new Vector3(lateralForces, 0, longitudinalForces));
 
         // Debug.Log(forces);
 
         Vector3 forces = -longitudinalForces - lateralForces;// Vector3.zero;
-        _rb.AddForceAtPosition((throttleInput - brakeInput) * maxEngineForce * wheel.transform.forward, forcePosition);
+        _rb.AddForceAtPosition((throttleInput - brakeInput) * maxEngineForce * Vector3.ProjectOnPlane(wheel.transform.forward, wheel.contactNormal).normalized, forcePosition);
         _rb.AddForceAtPosition(forces, forcePosition);
 
         // print(calculateLateralFriction(calculateLocalVelocity(_rb.GetPointVelocity(forcePosition), transform), angle));
         //print(calculateLongitudinalFriction(transform.rotation * _rb.velocity, angle));
         //print(calculateLocalVelocity(_rb.velocity));
         //print(_rb.GetPointVelocity(forcePosition));
-
     }
 }

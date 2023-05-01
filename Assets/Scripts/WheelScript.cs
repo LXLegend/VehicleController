@@ -38,6 +38,8 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     [HideInInspector] public bool isGrounded;
 
+    [HideInInspector] public Vector3 contactNormal = Vector3.up;
+
     // public Vector3 wheelCenter;
 
     public GameObject wheelObject;
@@ -64,6 +66,8 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     [HideInInspector] public float wheelDiameter = 0f;
 
+    public float steerSpeed = 5f;
+
     // velocity of the displacement
     private float displacementVelocity = 0f;
 
@@ -74,7 +78,7 @@ public class WheelScript : MonoBehaviour // ScriptableObject
 
     private void Update()
     {
-        transform.localRotation = Quaternion.Euler(transform.localRotation.x, steerAngle, transform.localRotation.z);
+        transform.localRotation = Quaternion.RotateTowards(transform.localRotation, Quaternion.Euler(transform.localRotation.x, steerAngle, transform.localRotation.z), steerSpeed);
         Vector3 positionDelta = Vector3.Project(transform.position - prevPos, transform.forward);
         float rotationEuler = Mathf.Sign(Vector3.Dot(positionDelta, transform.forward)) * Mathf.Rad2Deg * positionDelta.magnitude / wheelDiameter;
         print(rotationEuler);
@@ -95,6 +99,8 @@ public class WheelScript : MonoBehaviour // ScriptableObject
             isGrounded = true;
 
             contactPoint = raycastHit.point;
+
+            contactNormal = raycastHit.normal;
         }
         else
         {
@@ -113,17 +119,17 @@ public class WheelScript : MonoBehaviour // ScriptableObject
         wheelObject.transform.localPosition = new Vector3(0, - currentSpringLength, 0);
     }
 
-    public float calculateDisplacementVelocity(float deltaTime)
+    public float CalculateDisplacementVelocity(float deltaTime)
     {
         return (currentSpringLength - previousSpringLength) / deltaTime;
 
         // return (currentDisplacement - prevDisplacement) / deltaTime;
     }
 
-    public float calculateSpringForce(float deltaTime)
+    public float CalculateSpringForce(float deltaTime)
     {
         float springForce = - springStiffness * (currentSpringLength - springRestLength);
-        float damperForce = dampeningAmount * calculateDisplacementVelocity(deltaTime); // Mathf.Min(springForce, dampeningAmount * calculateDisplacementVelocity(deltaTime));
+        float damperForce = dampeningAmount * CalculateDisplacementVelocity(deltaTime); // Mathf.Min(springForce, dampeningAmount * calculateDisplacementVelocity(deltaTime));
         damperForce = Mathf.Clamp(damperForce, -springForce, springForce);
         float suspensionForce = (springForce - damperForce);
 
